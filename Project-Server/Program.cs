@@ -13,6 +13,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<CurrenciesService>();
 builder.Services.AddSingleton<ExchangeService>();
 
+var policy = "policy";
+builder.Services.AddCors(option => option.AddPolicy(name: policy, policy =>
+{
+    policy.AllowAnyOrigin(); policy.AllowAnyHeader(); policy.AllowAnyMethod();
+}));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,6 +32,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors(policy);
 
 app.MapControllers();
 
