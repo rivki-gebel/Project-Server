@@ -12,12 +12,8 @@ namespace Project_Server.Controllers
     [ApiController]
     public class ExchangeController : ControllerBase
     {
-        private readonly ExchangeService _exchangeService;
-
-        private string myKey = "8a61348ec087f33a49bea33f";
-
-        private HttpClient _client;
-
+        private readonly ExchangeService _exchangeService;             
+      
         public ExchangeController(ExchangeService exchangeService)
         {
             _exchangeService = exchangeService;

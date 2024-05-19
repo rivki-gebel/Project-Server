@@ -10,12 +10,17 @@ namespace Project_Server.Services
     {
         private static CurrenciesService _instance;
 
-        private string myKey = "8a61348ec087f33a49bea33f";
+        private readonly IConfiguration _configuration;
+
+        private string myKey;
 
         private HttpClient _client;
-        public CurrenciesService()
+
+        public CurrenciesService(IConfiguration configuration)
         {
             _client = new HttpClient();
+            _configuration = configuration;
+            myKey = _configuration["MY-API-KEY"];
         }
              
         public async Task<CurrenciesList> GetCurrenciesList()

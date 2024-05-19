@@ -12,6 +12,7 @@ namespace Project_Server.Controllers
     public class CurrenciesController : ControllerBase
     {
         private readonly CurrenciesService _currenciesService;
+
         public CurrenciesController(CurrenciesService currenciesService)
         {
             _currenciesService = currenciesService;
