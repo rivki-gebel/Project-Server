@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Project_Server.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +10,29 @@ namespace Project_Server.Controllers
     [ApiController]
     public class CurrenciesController : ControllerBase
     {
+        private string myKey = "8a61348ec087f33a49bea33f";
+
+        private HttpClient _client;
+        public CurrenciesController()
+        {
+            _client = new HttpClient();
+        }
+
         // GET: api/<CurrenciesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var response = await _client.GetAsync($"https://v6.exchangerate-api.com/v6/{myKey}/codes");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                CurrenciesList list = JsonConvert.DeserializeObject<CurrenciesList>(content);
+                return Ok(list);
+            }
+
+            return NotFound();
         }
 
-        // GET api/<CurrenciesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/<CurrenciesController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<CurrenciesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<CurrenciesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
