@@ -10,12 +10,16 @@ namespace Project_Server.Controllers
     [ApiController]
     public class ExchangeController : ControllerBase
     {
-        private string myKey = "8a61348ec087f33a49bea33f";
+        private readonly IConfiguration _configuration;
+
+        private string myKey; 
 
         private HttpClient _client;
-        public ExchangeController()
+        public ExchangeController(IConfiguration configuration)
         {
             _client = new HttpClient();
+            _configuration = configuration;
+            myKey = _configuration["MY-API-KEY"];
         }
 
         // GET: api/<ExchangeController>

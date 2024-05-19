@@ -6,16 +6,21 @@ using Project_Server.Entities;
 
 namespace Project_Server.Controllers
 {
+        
     [Route("api/[controller]")]
     [ApiController]
     public class CurrenciesController : ControllerBase
     {
-        private string myKey = "8a61348ec087f33a49bea33f";
+        private readonly IConfiguration _configuration;
+
+        private string myKey; 
 
         private HttpClient _client;
-        public CurrenciesController()
+        public CurrenciesController(IConfiguration configuration)
         {
             _client = new HttpClient();
+            _configuration = configuration;
+            myKey = _configuration["MY-API-KEY"];
         }
 
         // GET: api/<CurrenciesController>
