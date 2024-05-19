@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Project_Server.Entities;
 using Project_Server.Services;
 
 
@@ -20,7 +21,7 @@ namespace Project_Server.Controllers
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            var list= _currenciesService.GetCurrenciesList();
+            CurrenciesList list=await _currenciesService.GetCurrenciesList();
             if (list == null)
                 return BadRequest();
             return Ok(list);

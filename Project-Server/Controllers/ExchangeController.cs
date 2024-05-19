@@ -27,10 +27,10 @@ namespace Project_Server.Controllers
         [HttpGet("{baseCurrency}")]
         public async Task<ActionResult> Get(string baseCurrency)
         {
-            var exchange=_exchangeService.GetExchangeRates(baseCurrency);
-            if (exchange == null)
+            Conversion conversion=await _exchangeService.GetExchangeRates(baseCurrency);
+            if (conversion == null)
                 return BadRequest();
-            return Ok(exchange);
+            return Ok(conversion);
         }
 
 

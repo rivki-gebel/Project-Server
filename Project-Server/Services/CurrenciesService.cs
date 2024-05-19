@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Project_Server.Entities;
+using System;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.Xml;
 
 namespace Project_Server.Services
 {
@@ -17,7 +20,8 @@ namespace Project_Server.Services
              
         public async Task<CurrenciesList> GetCurrenciesList()
         {
-            var response = await _client.GetAsync($"https://v6.exchangerate-api.com/v6/{myKey}/codes");
+
+            HttpResponseMessage response = await _client.GetAsync($"https://v6.exchangerate-api.com/v6/{myKey}/codes");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
