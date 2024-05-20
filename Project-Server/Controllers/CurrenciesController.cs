@@ -26,7 +26,7 @@ namespace Project_Server.Controllers
             CurrenciesList list=await _currenciesService.GetCurrenciesList();
             if (list == null)
                 return BadRequest();
-            return Ok(list);
+            return Ok(list.Supported_codes);
         }
 
 
