@@ -1,4 +1,5 @@
-using Project_Server.Services;
+using Project_Server;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddSingleton<CurrenciesService>();
-builder.Services.AddSingleton<ExchangeService>();
+builder.Services.AddSingleton<Service>();
+
 
 var policy = "policy";
 builder.Services.AddCors(option => option.AddPolicy(name: policy, policy =>

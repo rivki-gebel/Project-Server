@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Project_Server.Entities;
-using Project_Server.Services;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,18 +11,18 @@ namespace Project_Server.Controllers
     [ApiController]
     public class CurrenciesController : ControllerBase
     {
-        private readonly CurrenciesService _currenciesService;
+        private readonly Service _service;
 
-        public CurrenciesController(CurrenciesService currenciesService)
+        public CurrenciesController(Service service)
         {
-            _currenciesService = currenciesService;
+            _service = service;
         }
 
         // GET: api/<CurrenciesController>
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            List<Currency> list=await _currenciesService.GetCurrenciesList();
+            List<Currency> list=await _service.GetCurrenciesList();
             if (list == null)
                 return BadRequest();
             return Ok(list);

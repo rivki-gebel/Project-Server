@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Project_Server.Entities;
-using Project_Server.Services;
+
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,18 +12,18 @@ namespace Project_Server.Controllers
     [ApiController]
     public class ExchangeController : ControllerBase
     {
-        private readonly ExchangeService _exchangeService;             
+        private readonly Service _service;             
       
-        public ExchangeController(ExchangeService exchangeService)
+        public ExchangeController(Service service)
         {
-            _exchangeService = exchangeService;
+            _service = service;
         }
        
         // GET: api/<ExchangeController>
         [HttpGet("{baseCurrency}")]
         public async Task<ActionResult> Get(string baseCurrency)
         {
-            Conversion conversion=await _exchangeService.GetExchangeRates(baseCurrency);
+            Conversion conversion=await _service.GetExchangeRates(baseCurrency);
             if (conversion == null)
                 return BadRequest();
             return Ok(conversion);
