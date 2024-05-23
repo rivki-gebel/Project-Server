@@ -23,10 +23,10 @@ namespace Project_Server.Controllers
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            CurrenciesList list=await _currenciesService.GetCurrenciesList();
+            List<Currency> list=await _currenciesService.GetCurrenciesList();
             if (list == null)
                 return BadRequest();
-            return Ok(list.Supported_codes);
+            return Ok(list);
         }
 
 

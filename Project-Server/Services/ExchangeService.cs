@@ -10,7 +10,7 @@ namespace Project_Server.Services
 
         private readonly IConfiguration _configuration;
 
-        private string myKey;
+        private string url;
        
 
 
@@ -19,19 +19,39 @@ namespace Project_Server.Services
         {
             _client = new HttpClient();
             _configuration = configuration;
-            myKey = _configuration["MY-API-KEY"];
+            url = _configuration["URL-EXCHANGE"];
         }
         public async Task<Conversion> GetExchangeRates(string baseCurrency)
         {
-            var response = await _client.GetAsync($"https://v6.exchangerate-api.com/v6/{myKey}/latest/{baseCurrency}");
+            var response = await _client.GetAsync($"{url}/{baseCurrency}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                Conversion conversion = JsonConvert.DeserializeObject<Conversion>(content);
+                // Deserialize to a temporary dynamic object
+                dynamic tempConversion = JsonConvert.DeserializeObject<dynamic>(content);
+
+                // Create a new Conversion object
+                Conversion conversion = new Conversion
+                {
+                    BaseCode = tempConversion.base_code
+                };
+
+                // Iterate over the conversion_rates and create ExchangeRates objects
+                foreach (var rate in tempConversion.conversion_rates)
+                {
+                    conversion.ConversionRates.Add(new ExchangeRates
+                    {
+                        TargetCode = rate.Name,
+                        ExchangeRate = (double)rate.Value
+                    });
+                }
+
                 return conversion;
             }
 
             return null;
         }
     }
+
+    
 }

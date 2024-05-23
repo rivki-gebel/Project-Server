@@ -12,7 +12,7 @@ namespace Project_Server.Services
 
         private readonly IConfiguration _configuration;
 
-        private string myKey;
+        private string url;
 
         private HttpClient _client;
 
@@ -20,18 +20,25 @@ namespace Project_Server.Services
         {
             _client = new HttpClient();
             _configuration = configuration;
-            myKey = _configuration["MY-API-KEY"];
+            url = _configuration["URL-CURRENCIES"];
         }
              
-        public async Task<CurrenciesList> GetCurrenciesList()
+        public async Task<List<Currency>> GetCurrenciesList()
         {
 
-            HttpResponseMessage response = await _client.GetAsync($"https://v6.exchangerate-api.com/v6/{myKey}/codes");
+            HttpResponseMessage response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                CurrenciesList list = JsonConvert.DeserializeObject<CurrenciesList>(content);
-                return list;
+                dynamic tempCurrenciesList = JsonConvert.DeserializeObject<dynamic>(content);
+
+                var currencies = new List<Currency>();
+                foreach (var code in tempCurrenciesList.supported_codes)
+                {
+                    currencies.Add(new Currency { Code = code[0], Name = code[1] });
+                }
+
+                return currencies;
             }
 
             return null;
