@@ -11,9 +11,9 @@ namespace Project_Server
     {        
         private readonly IConfiguration _configuration;
 
-        private string CurrenciesUrl;
+        private readonly string _currenciesUrl;
 
-        private string ExchangeUrl;
+        private readonly string _exchangeUrl;
 
         private HttpClient _client;
 
@@ -21,14 +21,14 @@ namespace Project_Server
         {
             _client = new HttpClient();
             _configuration = configuration;
-            CurrenciesUrl = _configuration["URL-CURRENCIES"];
-            ExchangeUrl = _configuration["URL-EXCHANGE"];
+            _currenciesUrl = _configuration["URL-CURRENCIES"];
+            _exchangeUrl = _configuration["URL-EXCHANGE"];
         }
 
         public async Task<List<Currency>> GetCurrenciesList()
         {
 
-            HttpResponseMessage response = await _client.GetAsync(CurrenciesUrl);
+            HttpResponseMessage response = await _client.GetAsync(_currenciesUrl);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -48,7 +48,7 @@ namespace Project_Server
 
         public async Task<Conversion> GetExchangeRates(string baseCurrency)
         {
-            var response = await _client.GetAsync($"{ExchangeUrl}/{baseCurrency}");
+            HttpResponseMessage response = await _client.GetAsync($"{_exchangeUrl}/{baseCurrency}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();

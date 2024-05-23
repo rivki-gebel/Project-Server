@@ -44,7 +44,6 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 
 
-app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/currencyExchange/currencies", GetAllCurrencies);
 
